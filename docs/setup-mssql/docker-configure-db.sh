@@ -38,7 +38,7 @@ done
 # Run SQL scripts
 /usr/bin/sqlcmd -S localhost -U sa -d master -i /setup-mssql/setup.sql
 /usr/bin/sqlcmd -S localhost -U sa -d ethtps -i /setup-mssql/init.sql
-/usr/bin/sqlcmd -S localhost -U sa -d ethtps -i /setup-mssql/populate.sql
+/usr/bin/sqlcmd -S localhost -U sa -d ethtps -i /setup-mssql/populate-docker.sql
 
 echo "SQL Server setup completed successfully"
 
