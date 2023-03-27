@@ -1,0 +1,281 @@
+Table dbo.Providers{
+  ID int [pk, increment]
+  Name varchar [unique, not null]
+  Type int [not null]
+  Color varchar(16) [not null]
+  IsGeneralPurpose bit
+  HistoricalAggregationDeltaBlock int
+  Enabled bit [not null]
+  SubchainOf int
+}
+
+Ref: dbo.Providers.Type > dbo.ProviderTypes.ID
+Ref: dbo.Providers.SubchainOf > dbo.Providers.ID
+
+Table dbo.ProviderTypes{
+  ID int [pk, increment]
+  Name varchar [unique, not null]
+  Color varchar(16) [not null]
+  Enabled bit [not null]
+}
+
+Table dbo.AccesStats{
+  ID int [pk, increment]
+  Project varchar [not null]
+  Path varchar [not null]
+  Count int [not null]
+  AverageRequestTimeMs float [not null]
+}
+
+Table dbo.DetailedAccessStats{
+  ID int [pk, increment]
+  Path varchar [not null]
+  RequestTimeMs float [not null]
+  IPAddress varchar [not null]
+  Date datetime [not null]
+}
+
+Table dbo.CachedResponses{
+  ID int [pk, increment]
+  Name varchar [unique, not null]
+  JSON varchar(max) 
+}
+
+Table dbo.Networks{
+  ID int [pk, increment]
+  Name varchar [unique, not null]
+}
+
+Table dbo.TPSAndGasData_Latest {
+  ID int [pk, increment]
+  Provider int [unique, not null]
+  Network int [not null]
+  TPS float [not null]
+  GPS float [not null]
+}
+
+Ref: dbo.TPSAndGasData_Latest.Provider > dbo.Providers.ID
+Ref: dbo.TPSAndGasData_Latest.Network > dbo.Networks.ID
+
+
+Table dbo.TPSAndGasData_Max {
+  ID int [pk, increment]
+  Provider int [unique, not null]
+  Network int [not null]
+  Date datetime [not null]
+  MaxTPS float [not null]
+  MaxGPS float [not null]
+  MaxTPSBlockNumber int
+  MaxGPSBlockNumber int
+}
+
+Ref: dbo.TPSAndGasData_Max.Provider > dbo.Providers.ID
+Ref: dbo.TPSAndGasData_Max.Network > dbo.Networks.ID
+
+
+Table dbo.TPSAndGasData_Hour{
+  ID int [pk, increment]
+  Network int [not null]
+  Provider int [not null]
+  StartDate datetime [not null]
+  AverageTPS float [not null]
+  AverageGPS float [not null]
+  ReadingsCount int [not null]
+  OCLH_JSON varchar
+}
+
+Ref: dbo.TPSAndGasData_Hour.Provider > dbo.Providers.ID
+Ref: dbo.TPSAndGasData_Hour.Network > dbo.Networks.ID
+
+
+Table dbo.TPSAndGasData_Day{
+  ID int [pk, increment]
+  Network int [not null]
+  Provider int [not null]
+  StartDate datetime [not null]
+  AverageTPS float [not null]
+  AverageGPS float [not null]
+  ReadingsCount int [not null]
+  OCLH_JSON varchar
+}
+
+Ref: dbo.TPSAndGasData_Day.Provider > dbo.Providers.ID
+Ref: dbo.TPSAndGasData_Day.Network > dbo.Networks.ID
+
+
+Table dbo.TPSAndGasData_Week{
+  ID int [pk, increment]
+  Network int [not null]
+  Provider int [not null]
+  StartDate datetime [not null]
+  AverageTPS float [not null]
+  AverageGPS float [not null]
+  ReadingsCount int [not null]
+  OCLH_JSON varchar
+}
+
+Ref: dbo.TPSAndGasData_Week.Provider > dbo.Providers.ID
+Ref: dbo.TPSAndGasData_Week.Network > dbo.Networks.ID
+
+Table dbo.TPSAndGasData_Month{
+  ID int [pk, increment]
+  Network int [not null]
+  Provider int [not null]
+  StartDate datetime [not null]
+  AverageTPS float [not null]
+  AverageGPS float [not null]
+  ReadingsCount int [not null]
+}
+
+Ref: dbo.TPSAndGasData_Month.Provider > dbo.Providers.ID
+Ref: dbo.TPSAndGasData_Month.Network > dbo.Networks.ID
+
+Table dbo.TPSAndGasData_Year{
+  ID int [pk, increment]
+  Network int [not null]
+  Provider int [not null]
+  StartDate datetime [not null]
+  AverageTPS float [not null]
+  AverageGPS float [not null]
+  ReadingsCount int [not null]
+}
+
+Ref: dbo.TPSAndGasData_Year.Provider > dbo.Providers.ID
+Ref: dbo.TPSAndGasData_Year.Network > dbo.Networks.ID
+
+Table dbo.TPSAndGasData_All {
+  ID int [pk, increment]
+  Network int [not null]
+  Provider int [not null]
+  StartDate datetime [not null]
+  AverageTPS float [not null]
+  AverageGPS float [not null]
+  ReadingsCount int [not null]
+}
+
+Ref: dbo.TPSAndGasData_All.Provider > dbo.Providers.ID
+Ref: dbo.TPSAndGasData_All.Network > dbo.Networks.ID
+
+Table dbo.OldestLoggedHistoricalEntries{
+  ID int [pk, increment]
+  Network int [not null]
+  Provider int [not null]
+  OldestBlock int [not null]
+}
+
+Ref: dbo.OldestLoggedHistoricalEntries.Provider > dbo.Providers.ID
+Ref: dbo.OldestLoggedHistoricalEntries.Network > dbo.Networks.ID
+
+Table dbo.APIKeys {
+  ID int [pk, increment]
+  KeyHash varchar [not null]
+  TotalCalls int [not null]
+  CallsLast24h int [not null]
+  Limit24h int [not null]
+}
+
+Table dbo.TimeWarpData{
+   ID int [pk, increment]
+   Network int [not null]
+   Provider int [not null]
+   Block int
+   StartDate datetime [not null]
+   AverageTPS float [not null]
+   AverageGPS float [not null]
+}
+
+Ref: dbo.TimeWarpData.Provider > dbo.Providers.ID
+Ref: dbo.TimeWarpData.Network > dbo.Networks.ID
+
+Table dbo.TimeWarpData_Minute{
+   ID int [pk, increment]
+   Network int [not null]
+   Provider int [not null]
+   Block int
+   StartDate datetime [not null]
+   AverageTPS float [not null]
+   AverageGPS float [not null]
+}
+
+Ref: dbo.TimeWarpData_Minute.Provider > dbo.Providers.ID
+Ref: dbo.TimeWarpData_Minute.Network > dbo.Networks.ID
+
+Table dbo.TimeWarpData_Hour{
+   ID int [pk, increment]
+   Network int [not null]
+   Provider int [not null]
+   Block int
+   StartDate datetime [not null]
+   AverageTPS float [not null]
+   AverageGPS float [not null]
+}
+
+Ref: dbo.TimeWarpData_Hour.Provider > dbo.Providers.ID
+Ref: dbo.TimeWarpData_Hour.Network > dbo.Networks.ID
+
+Table dbo.TimeWarpData_Day{
+   ID int [pk, increment]
+   Network int [not null]
+   Provider int [not null]
+   Block int
+   StartDate datetime [not null]
+   AverageTPS float [not null]
+   AverageGPS float [not null]
+}
+
+Ref: dbo.TimeWarpData_Day.Provider > dbo.Providers.ID
+Ref: dbo.TimeWarpData_Day.Network > dbo.Networks.ID
+
+Table dbo.TimeWarpData_Week{
+   ID int [pk, increment]
+   Network int [not null]
+   Provider int [not null]
+   Block int
+   StartDate datetime [not null]
+   AverageTPS float [not null]
+   AverageGPS float [not null]
+}
+
+Ref: dbo.TimeWarpData_Week.Provider > dbo.Providers.ID
+Ref: dbo.TimeWarpData_Week.Network > dbo.Networks.ID
+
+Table dbo.OldestLoggedTimeWarpBlocks {
+  ID int [pk, increment]
+  Network int [not null]
+  Provider int [not null]
+  OldestBlock int [not null]
+}
+
+Ref: dbo.OldestLoggedTimeWarpBlocks.Provider > dbo.Providers.ID
+Ref: dbo.OldestLoggedTimeWarpBlocks.Network > dbo.Networks.ID
+
+Table dbo.StarkwareTransactionCountData {
+  ID int [pk, increment]
+  Network int [not null]
+  Product varchar [not null]
+  LastUpdateTime datetime [not null]
+  LastUpdateCount int [not null]
+  LastUpdateTPS float [not null]
+}
+
+Ref: dbo.StarkwareTransactionCountData.Network > dbo.Networks.ID
+
+Table ProjectManagement.Features {
+  ID int [pk, increment]
+  ProjectID int [not null]
+  Enabled bit [not null]
+  Name varchar [not null]
+  Details varchar
+}
+
+Table ProjectManagement.Projects {
+  ID int [pk, increment]
+  Enabled bit [not null]
+  Provider int
+  Name varchar [not null]
+  Website varchar [not null]
+  Details varchar
+}
+
+Ref: ProjectManagement.Projects.Provider > dbo.Providers.ID
+Ref: ProjectManagement.Features.ProjectID > ProjectManagement.Projects.ID

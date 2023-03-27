@@ -1,0 +1,28 @@
+version: "3.4"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ETHTPS.dockerfile
+    ports:
+      - "8080:5000"
+    volumes:
+      - ${PWD}/ETHTPS.API/ETHTPS.API/appsettings.default.Development.Docker.json:/ethtps/ETHTPS.API/appsettings.Development.Docker.json
+    depends_on:
+      - db
+
+  db:
+    # Using Azure SQL Edge to get ARM support
+    build:
+      context: .
+      dockerfile: sql-server.dockerfile
+    ports:
+      - "1433:1433"
+    volumes:
+      - ${PWD}/docs/setup-mssql/:/setup-mssql/
+    environment:
+      SA_PASSWORD: "StrongPassw0rd"
+      SQLCMDPASSWORD: "StrongPassw0rd"
+      ACCEPT_EULA: "Y"
+    entrypoint: /setup-mssql/docker-entrypoint.sh
