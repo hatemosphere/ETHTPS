@@ -7,6 +7,8 @@ using ETHTPS.Data.Database;
 
 using Hangfire;
 using Hangfire.SqlServer;
+using Hangfire.Annotations;
+using Hangfire.Dashboard;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -237,7 +239,13 @@ namespace ETHTPS.API
                 });
                 if (Configuration.GetSection("Hangfire").GetValue<bool>("Show"))
                 {
-                    app.UseHangfireDashboard();
+                    var dashboardOptions = new DashboardOptions
+                    {
+                        IsReadOnlyFunc = (DashboardContext context) => false,
+                        Authorization = new[] { new HangfireAuthorizationFilter() }
+                    };
+
+                    app.UseHangfireDashboard("/hangfire", dashboardOptions);
                 }
             }
             app.UseSwagger();
@@ -252,6 +260,23 @@ namespace ETHTPS.API
             {
                 endpoints.MapControllers();
             });
+        }
+    }
+
+    public class HangfireAuthorizationFilter : IDashboardAuthorizationFilter
+    {
+        private readonly IConfiguration _configuration;
+
+        public HangfireAuthorizationFilter(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
+        public bool Authorize([NotNull] DashboardContext context)
+        {
+            bool exposeUnauthorizedEndpoint = _configuration.GetValue<bool>("Hangfire:ExposeUnauthorizedEndpoint", false);
+
+            return exposeUnauthorizedEndpoint
         }
     }
 }

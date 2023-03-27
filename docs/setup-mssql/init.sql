@@ -9,6 +9,7 @@ CREATE TABLE [dbo].[Providers] (
   [IsGeneralPurpose] bit,
   [HistoricalAggregationDeltaBlock] int,
   [Enabled] bit NOT NULL,
+  [TheoreticalMaxTps] int,
   [SubchainOf] int
 )
 GO
@@ -17,6 +18,7 @@ CREATE TABLE [dbo].[ProviderTypes] (
   [ID] int PRIMARY KEY IDENTITY(1, 1),
   [Name] nvarchar(255) UNIQUE NOT NULL,
   [Color] varchar(16) NOT NULL,
+  [IsGeneralPurpose] bit,
   [Enabled] bit NOT NULL
 )
 GO

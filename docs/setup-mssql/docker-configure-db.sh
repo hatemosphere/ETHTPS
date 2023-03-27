@@ -14,11 +14,10 @@ while [[ "$DBSTATUS" != "1" ]]; do
     # Run the SQL command to check database state
     DBSTATUS=$( /usr/bin/sqlcmd --login-timeout=1 -U sa -Q 'SET NOCOUNT ON; Select SUM(state) from sys.databases' )
 
-    # If DBSTATUS is 0, SQL Server is ready to use
-	if [[ $(echo "$DBSTATUS" | grep -o '[0-9]*') -eq 0 ]]; then
-		echo "SQL Server is now ready for connections."
-		break
-	fi
+    if [[ "$DBSTATUS" =~ ^[[:space:]]*-+[[:space:]]*0$ ]]; then
+        echo "SQL Server is now ready for connections."
+        break
+    fi
 
     # If we've exceeded the maximum number of retries, exit the script
     if [ $RETRY_COUNT -ge $MAX_RETRIES ]; then

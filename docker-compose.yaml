@@ -11,6 +11,7 @@ services:
       - ${PWD}/ETHTPS.API/ETHTPS.API/appsettings.default.Development.Docker.json:/ethtps/ETHTPS.API/appsettings.Development.Docker.json
     depends_on:
       - db
+    restart: always
 
   db:
     # Using Azure SQL Edge to get ARM support
