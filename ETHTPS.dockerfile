@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/dotnet/sdk:6.0
 WORKDIR /ethtps
 COPY ETHTPS.API .
 ENV ASPNETCORE_URLS="http://*:5000"
-ENV ASPNETCORE_ENVIRONMENT="Development.Docker"
+ENV ASPNETCORE_ENVIRONMENT="Development"
 RUN ["dotnet", "restore"]
 RUN ["dotnet", "build"]
 

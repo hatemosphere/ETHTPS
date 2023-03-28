@@ -6,9 +6,9 @@ services:
       context: .
       dockerfile: ETHTPS.dockerfile
     ports:
-      - "8080:5000"
-    volumes:
-      - ${PWD}/ETHTPS.API/ETHTPS.API/appsettings.default.Development.Docker.json:/ethtps/ETHTPS.API/appsettings.Development.Docker.json
+      - "5000:5000"
+    environment:
+      ASPNETCORE_ConnectionStrings__DefaultConnection: "Server=db;Database=ethtps;User Id=sa;Password=StrongPassw0rd; MultipleActiveResultSets=true"
     depends_on:
       - db
     restart: always
